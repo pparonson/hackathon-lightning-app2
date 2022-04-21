@@ -21,6 +21,7 @@ export class Store {
   balance = 0;
   pubkey = '';
   makeItRain = false;
+  displayMode = 'user';
 
   // PostList state
   posts: Post[] = [];

@@ -17,7 +17,7 @@ const VoteButton: React.FC<Props> = ({ post }) => {
 
   return (
     <Button variant="outline-primary" onClick={handleUpvoteClick}>
-      Upvote
+      Pay
     </Button>
   );
 };
