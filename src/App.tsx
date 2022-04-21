@@ -20,7 +20,7 @@ function App() {
     <>
       <Navbar bg="dark" variant="dark" expand="md">
         <Navbar.Brand onClick={store.gotoPosts}>
-          Builder's Guide to the LND Galaxy
+          Coin Rewarders
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

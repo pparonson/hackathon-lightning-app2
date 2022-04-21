@@ -11,12 +11,12 @@ const PostList: React.FC = () => {
   if (store.posts.length === 0) {
     return (
       <Jumbotron style={{ backgroundColor: '#fff' }}>
-        <h1>Welcome to r/builders</h1>
+        <h1>Welcome to CoinRewarders</h1>
         <p className="lead">
           It's a ghost town in here. Get the party started by creating the first post.
         </p>
         <p>
-          <Button onClick={store.gotoCreate}>Create a Post</Button>
+          <Button onClick={store.gotoCreate}>Create an Invoice</Button>
         </p>
       </Jumbotron>
     );
@@ -25,9 +25,9 @@ const PostList: React.FC = () => {
   return (
     <>
       <h2>
-        r/builders
+        Coin Rewarders
         <Button onClick={store.gotoCreate} className="mr-2 float-right">
-          Create a Post
+          Create an Invoice
         </Button>
       </h2>
       {store.sortedPosts.map(post => (
