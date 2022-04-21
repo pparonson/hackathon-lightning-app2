@@ -2,6 +2,7 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import expressWs from 'express-ws';
 import { Post, SocketEvents } from '../src/shared/types';
+import nodeManager, { NodeEvents } from './node-manager';
 import db, { PostEvents } from './posts-db';
 import * as routes from './routes';
 
@@ -13,6 +14,13 @@ const PORT = 4000;
 const { app } = expressWs(express());
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
+
+// simple middleware to grab the token from the header and add
+// it to the request's body
+app.use((req, res, next) => {
+  req.body.token = req.header('X-Token');
+  next();
+});
 
 /**
  * ExpressJS will hang if an async route handler doesn't catch errors and return a response.
@@ -38,26 +46,37 @@ export const catchAsyncErrors = (
 //
 // Configure Routes
 //
+app.post('/api/connect', catchAsyncErrors(routes.connect));
+app.get('/api/info', catchAsyncErrors(routes.getInfo));
 app.get('/api/posts', catchAsyncErrors(routes.getPosts));
 app.post('/api/posts', catchAsyncErrors(routes.createPost));
+app.post('/api/posts/:id/invoice', catchAsyncErrors(routes.postInvoice));
 app.post('/api/posts/:id/upvote', catchAsyncErrors(routes.upvotePost));
+app.post('/api/posts/:id/verify', catchAsyncErrors(routes.verifyPost));
 
 //
 // Configure Websocket
 //
 app.ws('/api/events', ws => {
-  // when a websocket connection is made, add listener for posts
-  const postsListener = (post: Post) => {
-    const event = { type: SocketEvents.postUpdated, data: post };
+  // when a websocket connection is made, add listeners for posts and invoices
+  const postsListener = (posts: Post[]) => {
+    const event = { type: SocketEvents.postUpdated, data: posts };
     ws.send(JSON.stringify(event));
   };
 
-  // add listener to to send data over the socket
-  db.on(PostEvents.updated, postsListener);
+  const paymentsListener = (info: any) => {
+    const event = { type: SocketEvents.invoicePaid, data: info };
+    ws.send(JSON.stringify(event));
+  };
 
-  // remove listener when the socket is closed
+  // add listeners to to send data over the socket
+  db.on(PostEvents.updated, postsListener);
+  nodeManager.on(NodeEvents.invoicePaid, paymentsListener);
+
+  // remove listeners when the socket is closed
   ws.on('close', () => {
     db.off(PostEvents.updated, postsListener);
+    nodeManager.off(NodeEvents.invoicePaid, paymentsListener);
   });
 });
 
@@ -70,4 +89,5 @@ app.listen(PORT, async () => {
 
   // Rehydrate data from the DB file
   await db.restore();
+  await nodeManager.reconnectNodes(db.getAllNodes());
 });
