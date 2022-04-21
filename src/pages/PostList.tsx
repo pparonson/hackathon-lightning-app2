@@ -7,11 +7,12 @@ import { useStore } from '../store/Provider';
 
 const PostList: React.FC = () => {
   const store = useStore();
+  const userType = `Mode: ${store.displayMode.toUpperCase()}`;
 if (store.displayMode !== "admin") {
   if (store.posts.length === 0) {
     return (
       <Jumbotron style={{ backgroundColor: '#fff' }}>
-        <h1>Coin Rewarder</h1>
+        <h1>{ userType }</h1>
         <p className="lead">
           It's a ghost town in here. Get the party started by creating the first post.
         </p>
@@ -25,7 +26,7 @@ if (store.displayMode !== "admin") {
   return (
     <>
       <h2>
-       Coin Rewarder
+       {userType}
         <Button onClick={store.gotoCreate} className="mr-2 float-right">
           Create an Invoice 
         </Button>
@@ -41,7 +42,7 @@ if (store.displayMode !== "admin") {
   if (store.posts.length === 0) {
     return (
       <Jumbotron style={{ backgroundColor: '#fff' }}>
-        <h1>Coin Rewarder</h1>
+        <h1>{userType}</h1>
         <p className="lead">
           It's a ghost town in here. Get the party started by creating the first post.
         </p>
@@ -55,7 +56,7 @@ if (store.displayMode !== "admin") {
   return (
     <>
       <h2>
-       Coin Rewarder
+       {userType}
       </h2>
       {store.sortedPosts.map(post => (
         <PostCard key={post.id} post={post} />

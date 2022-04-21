@@ -1,7 +1,7 @@
 import React from 'react';
 import { Badge, Card } from 'react-bootstrap';
 import { Post } from '../shared/types';
-import VerifyButton from './VerifyButton';
+// import VerifyButton from './VerifyButton';
 import VoteButton from './VoteButton';
 
 interface Props {
@@ -32,7 +32,7 @@ const PostCard: React.FC<Props> = ({ post }) => {
           <Badge variant={post.votes ? 'primary' : 'light'}>{post.votes}</Badge> votes
         </h5>
         <span>
-          <VerifyButton post={post} />
+          {/* <VerifyButton post={post} /> */}
           <VoteButton post={post} />
         </span>
       </Card.Footer>
