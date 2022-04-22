@@ -154,11 +154,12 @@ export class Store {
   showPaymentRequest = async (post: Post) => {
     this.clearError();
     try {
-      const res = await api.createInvoice(post.id);
+      // const res = await api.createInvoice(post.id);
       this.pmtForPost = post;
-      this.pmtAmount = res.amount;
-      this.pmtRequest = res.payreq;
-      this.pmtHash = res.hash;
+      // this.pmtAmount = res.amount;
+      // this.pmtRequest = res.payreq;
+      this.pmtRequest = post.invoice;
+      // this.pmtHash = res.hash;
       this.pmtSuccessMsg = '';
       this.pmtError = '';
       this.showPayModal = true;
