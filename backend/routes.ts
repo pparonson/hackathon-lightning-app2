@@ -41,16 +41,18 @@ export const getPosts = (req: Request, res: Response) => {
  * POST /api/posts
  */
 export const createPost = async (req: Request, res: Response) => {
-  const { token, title, content } = req.body;
-  const rpc = nodeManager.getRpc(token);
+  // const { token, title, content } = req.body;
+  const { title, content, customerId, agentId, invoice } = req.body;
+  // const rpc = nodeManager.getRpc(token);
 
-  const { alias, identityPubkey: pubkey } = await rpc.getInfo();
+  // const { alias, identityPubkey: pubkey } = await rpc.getInfo();
   // lnd requires the message to sign to be base64 encoded
-  const msg = Buffer.from(content).toString('base64');
+  // const msg = Buffer.from(content).toString('base64');
   // sign the message to obtain a signature
-  const { signature } = await rpc.signMessage({ msg });
+  // const { signature } = await rpc.signMessage({ msg });
 
-  const post = await db.createPost(alias, title, content, signature, pubkey);
+  // const post = await db.createPost(alias, title, content, signature, pubkey);
+  const post = await db.createPost(title, content, customerId, agentId, invoice);
   res.status(201).send(post);
 };
 
