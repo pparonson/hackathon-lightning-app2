@@ -8,7 +8,7 @@ import { useStore } from '../store/Provider';
 const PostList: React.FC = () => {
   const store = useStore();
   const userType = `Mode: ${store.displayMode.toUpperCase()}`;
-if (store.displayMode === "admin") {
+if (store.displayMode !== "admin") {
   if (store.posts.length === 0) {
     return (
       <Jumbotron style={{ backgroundColor: '#fff' }}>

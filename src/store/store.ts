@@ -53,7 +53,8 @@ export class Store {
   //
 
   gotoPosts = () => (this.page = 'posts');
-  gotoCreate = () => (this.page = this.connected ? 'create' : 'connect');
+  // gotoCreate = () => (this.page = this.connected ? 'create' : 'connect');
+  gotoCreate = () => (this.page = 'create');
   gotoConnect = () => (this.page = 'connect');
 
   clearError = () => (this.error = '');
