@@ -75,8 +75,14 @@ export const fetchPosts = async () => {
   return await httpGet('posts');
 };
 
-export const createPost = async (title: string, content: string) => {
-  const request = { title, content };
+export const createPost = async (
+  title: string,
+  content: string,
+  customerId: string,
+  agentId: string,
+  invoice: string,
+) => {
+  const request = { title, content, customerId, agentId, invoice };
   return await httpPost('posts', request);
 };
 
