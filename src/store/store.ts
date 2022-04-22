@@ -115,15 +115,15 @@ export class Store {
   };
 
   createPost = async (
+    username: string,
     title: string,
-    content: string,
     customerId: string,
     agentId: string,
     invoice: string,
   ) => {
     this.clearError();
     try {
-      await api.createPost(title, content, customerId, agentId, invoice);
+      await api.createPost(username, title, customerId, agentId, invoice);
       this.gotoPosts();
     } catch (err) {
       this.error = err.message;
@@ -141,15 +141,15 @@ export class Store {
     }
   };
 
-  verifyPost = async (postId: number) => {
-    this.clearError();
-    try {
-      const post = await api.verifyPost(postId);
-      this._updatePost(post);
-    } catch (err) {
-      this.error = err.message;
-    }
-  };
+  // verifyPost = async (postId: number) => {
+  //   this.clearError();
+  //   try {
+  //     const post = await api.verifyPost(postId);
+  //     this._updatePost(post);
+  //   } catch (err) {
+  //     this.error = err.message;
+  //   }
+  // };
 
   showPaymentRequest = async (post: Post) => {
     this.clearError();

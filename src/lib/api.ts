@@ -76,13 +76,13 @@ export const fetchPosts = async () => {
 };
 
 export const createPost = async (
+  username: string,
   title: string,
-  content: string,
   customerId: string,
   agentId: string,
   invoice: string,
 ) => {
-  const request = { title, content, customerId, agentId, invoice };
+  const request = { username, title, customerId, agentId, invoice };
   return await httpPost('posts', request);
 };
 
@@ -95,6 +95,6 @@ export const upvotePost = async (postId: number, hash: string) => {
   return await httpPost(`posts/${postId}/upvote`, request);
 };
 
-export const verifyPost = async (postId: number) => {
-  return await httpPost(`posts/${postId}/verify`);
-};
+// export const verifyPost = async (postId: number) => {
+//   return await httpPost(`posts/${postId}/verify`);
+// };

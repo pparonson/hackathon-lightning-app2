@@ -15,17 +15,20 @@ const PostCard: React.FC<Props> = ({ post }) => {
         <Card.Title>
           <strong>{post.title}</strong>
         </Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">
+        {/* <Card.Subtitle className="mb-2 text-muted">
           Posted
-          {post.signature && ' and signed '}
+           {post.signature && ' and signed '} 
           by {post.username}
           {post.verified && (
             <Badge pill variant="success" className="ml-2">
               verified
             </Badge>
           )}
-        </Card.Subtitle>
-        <Card.Text>{post.content}</Card.Text>
+        </Card.Subtitle> */}
+        <Card.Text>Agent ID {post.agentId}</Card.Text>
+        <Card.Text>USER {post.username}</Card.Text>
+        <Card.Text>Customer ID {post.customerId}</Card.Text>
+        <Card.Text>Invoice {post.invoice}</Card.Text>
       </Card.Body>
       <Card.Footer className="d-flex justify-content-between">
         <h5 className="mt-1">

@@ -6,8 +6,8 @@ import { useStore } from '../store/Provider';
 const CreatePost: React.FC = () => {
   const store = useStore();
 
+  const [username, setUsername] = useState('');
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const [customerId, setCustomerId] = useState('');
   const [agentId, setAgentId] = useState('');
   const [invoice, setInvoice] = useState('');
@@ -15,10 +15,9 @@ const CreatePost: React.FC = () => {
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLElement>) => {
       e.preventDefault();
-      store.createPost(title, content, customerId, agentId, invoice);
+      store.createPost(username, title, customerId, agentId, invoice);
     },
-    // [title, content, store],
-    [title, content, customerId, agentId, invoice, store],
+    [username, title, customerId, agentId, invoice, store],
   );
 
   return (
@@ -26,6 +25,14 @@ const CreatePost: React.FC = () => {
       <Card>
         <Card.Header>Create a new Post</Card.Header>
         <Card.Body>
+          <Form.Group controlId="username">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              required
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+            />
+          </Form.Group>
           <Form.Group controlId="title">
             <Form.Label>Title</Form.Label>
             <Form.Control
@@ -58,16 +65,6 @@ const CreatePost: React.FC = () => {
               rows={8}
               value={invoice}
               onChange={e => setInvoice(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="title">
-            <Form.Label>Content</Form.Label>
-            <Form.Control
-              required
-              as="textarea"
-              rows={8}
-              value={content}
-              onChange={e => setContent(e.target.value)}
             />
           </Form.Group>
         </Card.Body>

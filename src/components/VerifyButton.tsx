@@ -7,22 +7,22 @@ interface Props {
   post: Post;
 }
 
-const VerifyButton: React.FC<Props> = ({ post }) => {
-  const store = useStore();
+// const VerifyButton: React.FC<Props> = ({ post }) => {
+//   const store = useStore();
 
-  const handleVerify = useCallback(() => {
-    store.verifyPost(post.id);
-  }, [store, post.id]);
+  // const handleVerify = useCallback(() => {
+  //   store.verifyPost(post.id);
+  // }, [store, post.id]);
 
-  if (post.verified) {
-    return null;
-  }
+  // if (post.verified) {
+  //   return null;
+  // }
 
-  return (
-    <Button variant="light" className="mr-3" onClick={handleVerify}>
-      Verify Signature
-    </Button>
-  );
-};
+  // return (
+  //   <Button variant="light" className="mr-3" onClick={handleVerify}>
+  //     Verify Signature
+  //   </Button>
+  // );
+// };
 
-export default VerifyButton;
+// export default VerifyButton;

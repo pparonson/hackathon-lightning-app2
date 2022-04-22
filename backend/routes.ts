@@ -42,7 +42,7 @@ export const getPosts = (req: Request, res: Response) => {
  */
 export const createPost = async (req: Request, res: Response) => {
   // const { token, title, content } = req.body;
-  const { title, content, customerId, agentId, invoice } = req.body;
+  const { username, title, customerId, agentId, invoice } = req.body;
   // const rpc = nodeManager.getRpc(token);
 
   // const { alias, identityPubkey: pubkey } = await rpc.getInfo();
@@ -52,7 +52,7 @@ export const createPost = async (req: Request, res: Response) => {
   // const { signature } = await rpc.signMessage({ msg });
 
   // const post = await db.createPost(alias, title, content, signature, pubkey);
-  const post = await db.createPost(title, content, customerId, agentId, invoice);
+  const post = await db.createPost(username, title, customerId, agentId, invoice);
   res.status(201).send(post);
 };
 
@@ -86,46 +86,46 @@ export const upvotePost = async (req: Request, res: Response) => {
 /**
  * POST /api/posts/:id/verify
  */
-export const verifyPost = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { token } = req.body;
-  // find the post
-  const post = db.getPostById(parseInt(id));
-  if (!post) throw new Error('Post not found');
-  // find the node that's verifying this post
-  const verifyingNode = db.getNodeByToken(token);
-  if (!verifyingNode) throw new Error('Your node not found. Try reconnecting.');
+// export const verifyPost = async (req: Request, res: Response) => {
+//   const { id } = req.params;
+//   const { token } = req.body;
+//   // find the post
+//   const post = db.getPostById(parseInt(id));
+//   if (!post) throw new Error('Post not found');
+//   // find the node that's verifying this post
+//   const verifyingNode = db.getNodeByToken(token);
+//   if (!verifyingNode) throw new Error('Your node not found. Try reconnecting.');
 
-  if (post.pubkey === verifyingNode.pubkey)
-    throw new Error('You cannot verify your own posts!');
+//   if (post.pubkey === verifyingNode.pubkey)
+//     throw new Error('You cannot verify your own posts!');
 
-  const rpc = nodeManager.getRpc(verifyingNode.token);
-  const msg = Buffer.from(post.content).toString('base64');
-  const { signature } = post;
-  const { pubkey, valid } = await rpc.verifyMessage({ msg, signature });
+//   const rpc = nodeManager.getRpc(verifyingNode.token);
+//   const msg = Buffer.from(post.content).toString('base64');
+//   const { signature } = post;
+//   const { pubkey, valid } = await rpc.verifyMessage({ msg, signature });
 
-  if (!valid || pubkey !== post.pubkey) {
-    throw new Error('Verification failed! The signature is invalid.');
-  }
+//   if (!valid || pubkey !== post.pubkey) {
+//     throw new Error('Verification failed! The signature is invalid.');
+//   }
 
-  db.verifyPost(post.id);
-  res.send(post);
-};
+//   db.verifyPost(post.id);
+//   res.send(post);
+// };
 
-/**
- * POST /api/posts/:id/invoice
- */
+// /**
+//  * POST /api/posts/:id/invoice
+//  */
 export const postInvoice = async (req: Request, res: Response) => {
   const { id } = req.params;
   // find the post
   const post = db.getPostById(parseInt(id));
   if (!post) throw new Error('Post not found');
   // find the node that made this post
-  const node = db.getNodeByPubkey(post.pubkey);
-  if (!node) throw new Error('Node not found for this post');
+  // const node = db.getNodeByPubkey(post.pubkey);
+  // if (!node) throw new Error('Node not found for this post');
 
   // create an invoice on the poster's node
-  const rpc = nodeManager.getRpc(node.token);
+  // const rpc = nodeManager.getRpc(node.token);
   const amount = 100;
   const inv = await rpc.addInvoice({ value: amount.toString() });
   res.send({

@@ -49,22 +49,27 @@ class PostsDb extends EventEmitter {
   async createPost(
     username: string,
     title: string,
-    content: string,
-    signature: string,
-    pubkey: string,
+    // content: string,
+    // signature: string,
+    // pubkey: string,
+    customerId: string,
+    agentId: string,
+    invoice: string,
   ) {
     // calculate the highest numeric id
     const maxId = Math.max(0, ...this._data.posts.map(p => p.id));
 
     const post: Post = {
       id: maxId + 1,
-      title,
-      content,
       username,
+      title,
+      customerId,
+      agentId,
+      invoice,
       votes: 0,
-      signature,
-      pubkey,
-      verified: false,
+      // signature,
+      // pubkey,
+      // verified: false,
     };
     this._data.posts.push(post);
 
@@ -83,15 +88,15 @@ class PostsDb extends EventEmitter {
     this.emit(PostEvents.updated, post);
   }
 
-  async verifyPost(postId: number) {
-    const post = this._data.posts.find(p => p.id === postId);
-    if (!post) {
-      throw new Error('Post not found');
-    }
-    post.verified = true;
-    await this.persist();
-    this.emit(PostEvents.updated, post);
-  }
+  // async verifyPost(postId: number) {
+  //   const post = this._data.posts.find(p => p.id === postId);
+  //   if (!post) {
+  //     throw new Error('Post not found');
+  //   }
+  //   post.verified = true;
+  //   await this.persist();
+  //   this.emit(PostEvents.updated, post);
+  // }
 
   //
   // Nodes

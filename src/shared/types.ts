@@ -1,12 +1,14 @@
 export interface Post {
   id: number;
-  title: string;
-  content: string;
   username: string;
+  title: string;
+  customerId: string;
+  agentId: string;
+  invoice: string;
   votes: number;
-  signature: string;
-  pubkey: string;
-  verified: boolean;
+  // signature: string;
+  // pubkey: string;
+  // verified: boolean;
 }
 
 export const SocketEvents = {
