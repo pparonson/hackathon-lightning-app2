@@ -141,6 +141,17 @@ export class Store {
     }
   };
 
+  updatePayModal = async () => {
+    this.pmtError = '';
+    try {
+      if (!this.pmtForPost) throw new Error('No post selected to upvote');
+      //await api.upvotePost(this.pmtForPost.id, this.pmtHash);
+      this.pmtSuccessMsg = `Your payment of ${this.pmtAmount} sats to ${this.pmtForPost.username} was successful! The post has been upvoted!`;
+    } catch (err) {
+      this.pmtError = err.message;
+    }
+  };
+
   // verifyPost = async (postId: number) => {
   //   this.clearError();
   //   try {
@@ -157,6 +168,7 @@ export class Store {
       // const res = await api.createInvoice(post.id);
       this.pmtForPost = post;
       // this.pmtAmount = res.amount;
+      this.pmtAmount = await api.getPaymentAmount(post.invoice);
       // this.pmtRequest = res.payreq;
       this.pmtRequest = post.invoice;
       // this.pmtHash = res.hash;
@@ -193,13 +205,14 @@ export class Store {
       const { hash, amount, pubkey } = event.data;
       // upvote the post when the incoming payment is made for the
       // pmtHash the we are waiting for
-      if (hash === this.pmtHash) {
-        this.upvotePost();
-      }
+      //if (hash === this.pmtHash) {
+        //this.upvotePost();
+      //}
+      this.updatePayModal();
       // update the balance when an invoice is paid to the current user
-      if (pubkey === this.pubkey) {
+      //if (pubkey === this.pubkey) {
         this._incrementBalance(parseInt(amount));
-      }
+      //}
     }
   };
 

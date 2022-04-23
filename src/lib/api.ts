@@ -98,3 +98,9 @@ export const upvotePost = async (postId: number, hash: string) => {
 // export const verifyPost = async (postId: number) => {
 //   return await httpPost(`posts/${postId}/verify`);
 // };
+
+export const getPaymentAmount = async (paymentRequest: string) => {
+  const token = getToken();
+  const request = { token, paymentRequest };
+  return await httpPost('paymentRequestAmount', request);
+};

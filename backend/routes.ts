@@ -57,6 +57,22 @@ export const createPost = async (req: Request, res: Response) => {
 };
 
 /**
+ * Post /api/getPaymentRequestAmount
+ */
+ export const getPaymentAmount = async (req: Request, res: Response) => {
+  const { token, paymentRequest } = req.body;
+  if (!token) throw new Error('Your node is not connected!');
+  // find the node that's making the request
+  const node = db.getNodeByToken(token);
+  if (!node) throw new Error('Node not found with this token');
+
+  // get the node's pubkey and alias
+  const rpc = nodeManager.getRpc(node.token);
+  const { numSatoshis } = await rpc.decodePayReq(paymentRequest);
+  res.send({ numSatoshis });
+};
+
+/**
  * POST /api/posts/:id/upvote
  */
 // export const upvotePost = async (req: Request, res: Response) => {
