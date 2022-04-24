@@ -162,6 +162,15 @@ export class Store {
   //   }
   // };
 
+  sendPaymentRequest = async (post: Post) => {
+    this.clearError();
+    try {
+      api.postInvoice(post.id);
+    } catch (err) {
+      this.error = err.message;
+    }
+  };
+
   showPaymentRequest = async (post: Post) => {
     this.clearError();
     try {
@@ -175,7 +184,7 @@ export class Store {
       // this.pmtHash = res.hash;
       this.pmtSuccessMsg = '';
       this.pmtError = '';
-      this.showPayModal = true;
+      // this.showPayModal = true;
     } catch (err) {
       this.error = err.message;
     }

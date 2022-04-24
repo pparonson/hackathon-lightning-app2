@@ -86,7 +86,11 @@ export const createPost = async (
   return await httpPost('posts', request);
 };
 
-export const createInvoice = async (postId: number) => {
+// export const createInvoice = async (postId: number) => {
+//   return await httpPost(`posts/${postId}/invoice`);
+// };
+
+export const postInvoice = async (postId: number) => {
   return await httpPost(`posts/${postId}/invoice`);
 };
 

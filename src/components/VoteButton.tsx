@@ -12,7 +12,8 @@ const VoteButton: React.FC<Props> = ({ post }) => {
 
   // create an invoice and show the modal when the button is clicked
   const handleUpvoteClick = useCallback(async () => {
-    await store.showPaymentRequest(post);
+    // await store.showPaymentRequest(post);
+    await store.sendPaymentRequest(post);
   }, [store, post]);
 
   return (
