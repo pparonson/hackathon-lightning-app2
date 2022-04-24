@@ -168,7 +168,8 @@ export class Store {
       // const res = await api.createInvoice(post.id);
       this.pmtForPost = post;
       // this.pmtAmount = res.amount;
-      this.pmtAmount = await api.getPaymentAmount(post.invoice);
+      // this.pmtAmount = await api.getPaymentAmount(post.invoice);
+      this.pmtAmount = '100';
       // this.pmtRequest = res.payreq;
       this.pmtRequest = post.invoice;
       // this.pmtHash = res.hash;
@@ -206,12 +207,12 @@ export class Store {
       // upvote the post when the incoming payment is made for the
       // pmtHash the we are waiting for
       //if (hash === this.pmtHash) {
-        //this.upvotePost();
+      //this.upvotePost();
       //}
       this.updatePayModal();
       // update the balance when an invoice is paid to the current user
       //if (pubkey === this.pubkey) {
-        this._incrementBalance(parseInt(amount));
+      this._incrementBalance(parseInt(amount));
       //}
     }
   };
