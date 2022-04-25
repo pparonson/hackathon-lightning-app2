@@ -95,6 +95,12 @@ export const upvotePost = async (postId: number, hash: string) => {
   return await httpPost(`posts/${postId}/upvote`, request);
 };
 
+export const markPostAsPaid = async (postId: number) => {
+  const token = getToken();
+  const request = {token };
+  return await httpPost(`posts/${postId}/markPostAsPaid`, request);
+};
+
 // export const verifyPost = async (postId: number) => {
 //   return await httpPost(`posts/${postId}/verify`);
 // };

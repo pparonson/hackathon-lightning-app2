@@ -67,6 +67,7 @@ class PostsDb extends EventEmitter {
       agentId,
       invoice,
       votes: 0,
+      paid: false,
       // signature,
       // pubkey,
       // verified: false,
@@ -84,6 +85,16 @@ class PostsDb extends EventEmitter {
       throw new Error('Post not found');
     }
     post.votes++;
+    await this.persist();
+    this.emit(PostEvents.updated, post);
+  }
+
+  async markPaid(postId: number) {
+    const post = this._data.posts.find(p => p.id === postId);
+    if (!post) {
+      throw new Error('Post not found');
+    }
+    post.paid = true;
     await this.persist();
     this.emit(PostEvents.updated, post);
   }

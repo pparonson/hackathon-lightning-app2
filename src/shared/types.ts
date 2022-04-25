@@ -6,6 +6,7 @@ export interface Post {
   agentId: string;
   invoice: string;
   votes: number;
+  paid: boolean;
   // signature: string;
   // pubkey: string;
   // verified: boolean;

@@ -54,7 +54,7 @@ app.post('/api/posts/:id/invoice', catchAsyncErrors(routes.postInvoice));
 // app.post('/api/posts/:id/upvote', catchAsyncErrors(routes.upvotePost));
 // app.post('/api/posts/:id/verify', catchAsyncErrors(routes.verifyPost));
 app.post('/api/paymentRequestAmount', catchAsyncErrors(routes.getPaymentAmount));
-
+app.post('/api/posts/:id/markPostAsPaid', catchAsyncErrors(routes.markPaid));
 //
 // Configure Websocket
 //

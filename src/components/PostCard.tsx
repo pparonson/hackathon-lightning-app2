@@ -3,12 +3,18 @@ import { Badge, Card } from 'react-bootstrap';
 import { Post } from '../shared/types';
 // import VerifyButton from './VerifyButton';
 import VoteButton from './VoteButton';
+import { useStore } from '../store/Provider';
 
 interface Props {
   post: Post;
 }
 
 const PostCard: React.FC<Props> = ({ post }) => {
+  let status = "Unpaid";
+  if(post.paid) {
+    status = 'Paid';
+  }
+  
   return (
     <Card key={post.id} className="my-4">
       <Card.Body>
@@ -32,7 +38,7 @@ const PostCard: React.FC<Props> = ({ post }) => {
       </Card.Body>
       <Card.Footer className="d-flex justify-content-between">
         <h5 className="mt-1">
-          <Badge variant={post.votes ? 'primary' : 'light'}>{post.votes}</Badge> votes
+          <span>{ status }</span>
         </h5>
         <span>
           {/* <VerifyButton post={post} /> */}

@@ -15,11 +15,18 @@ const VoteButton: React.FC<Props> = ({ post }) => {
     await store.showPaymentRequest(post);
   }, [store, post]);
 
-  return (
-    <Button variant="outline-primary" onClick={handleUpvoteClick}>
-      Pay
-    </Button>
-  );
+  if (store.displayMode === 'admin') {
+    return (
+      <Button variant="outline-primary" onClick={handleUpvoteClick}>
+        Pay
+      </Button>
+    );
+  }
+  else {
+    return (
+      <></>
+    )
+  }
 };
 
 export default VoteButton;

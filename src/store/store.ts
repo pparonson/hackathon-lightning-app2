@@ -141,6 +141,16 @@ export class Store {
     }
   };
 
+  markPostAsPaid = async () => {
+    this.pmtError = '';
+    try {
+      if (!this.pmtForPost) throw new Error('No post selected to upvote');
+      await api.markPostAsPaid(this.pmtForPost.id);
+    } catch (err) {
+      this.pmtError = err.message;
+    }
+  };
+
   updatePayModal = async () => {
     this.pmtError = '';
     try {
@@ -209,6 +219,7 @@ export class Store {
       //this.upvotePost();
       //}
       this.updatePayModal();
+      this.markPostAsPaid();
       // update the balance when an invoice is paid to the current user
       //if (pubkey === this.pubkey) {
       this._incrementBalance(parseInt(amount));
@@ -226,7 +237,7 @@ export class Store {
     this.makeItRain = true;
     setTimeout(() => {
       this.makeItRain = false;
-    }, 7000);
+    }, 20000);
   };
 
   private _updatePost = (post: Post) => {

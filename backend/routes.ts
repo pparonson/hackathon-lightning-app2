@@ -100,6 +100,24 @@ export const createPost = async (req: Request, res: Response) => {
 // };
 
 /**
+ * POST /api/posts/:id/markPaid
+ */
+export const markPaid = async (req: Request, res: Response) => {
+const { id } = req.params;
+const { token } = req.body;
+
+const post = db.getPostById(parseInt(id));
+if (!post) throw new Error('Post not found');
+const node = db.getNodeByToken(token);
+if (!node) throw new Error('Node not found for this post');
+
+const rpc = nodeManager.getRpc(node.token);
+db.markPaid(post.id);
+res.send(post);
+};
+
+
+/**
  * POST /api/posts/:id/verify
  */
 // export const verifyPost = async (req: Request, res: Response) => {
