@@ -11,7 +11,7 @@ const PayModal: React.FC = () => {
       <Form.Group controlId="title">
         {store.pmtError && <Alert variant="danger">{store.pmtError}</Alert>}
         <Form.Label>
-          Payment Request for <strong>{store.pmtAmount} sats</strong> to{' '}
+          Payment Request to{' '}
           <strong>{store.pmtForPost?.username}</strong>
         </Form.Label>
         <Form.Control required as="textarea" rows={5} value={store.pmtRequest} readOnly />

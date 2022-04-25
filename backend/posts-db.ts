@@ -39,7 +39,8 @@ class PostsDb extends EventEmitter {
   //
 
   getAllPosts() {
-    return this._data.posts.sort((a, b) => b.votes - a.votes);
+    //return this._data.posts.sort((a, b) => b.votes - a.votes);
+    return this._data.posts.sort((a, b) => b.id - a.id);
   }
 
   getPostById(id: number) {

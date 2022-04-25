@@ -44,7 +44,7 @@ export class Store {
       // sort by votes desc if they are not equal
       if (a.votes !== b.votes) return b.votes - a.votes;
       // sort by id if they have the same votes
-      return a.id - b.id;
+      return b.id - a.id;
     });
   }
 
@@ -237,7 +237,7 @@ export class Store {
     this.makeItRain = true;
     setTimeout(() => {
       this.makeItRain = false;
-    }, 20000);
+    }, 8000);
   };
 
   private _updatePost = (post: Post) => {
