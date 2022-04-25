@@ -56,7 +56,7 @@ function App() {
   return (
     <>
       <Navbar bg="dark" variant="dark" expand="md">
-        <Navbar.Brand onClick={store.gotoPosts}>Coin Rewarder</Navbar.Brand>
+        <Navbar.Brand onClick={store.gotoPosts}>Coin Wizard</Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
