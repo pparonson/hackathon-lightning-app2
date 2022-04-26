@@ -135,7 +135,7 @@ export class Store {
     try {
       if (!this.pmtForPost) throw new Error('No post selected to upvote');
       await api.upvotePost(this.pmtForPost.id, this.pmtHash);
-      this.pmtSuccessMsg = `Your payment of ${this.pmtAmount} sats to ${this.pmtForPost.username} was successful! The post has been upvoted!`;
+      this.pmtSuccessMsg = `Your payment to ${this.pmtForPost.username} was successful!`;
     } catch (err) {
       this.pmtError = err.message;
     }
@@ -156,7 +156,7 @@ export class Store {
     try {
       if (!this.pmtForPost) throw new Error('No post selected to upvote');
       //await api.upvotePost(this.pmtForPost.id, this.pmtHash);
-      this.pmtSuccessMsg = `Your payment of ${this.pmtAmount} sats to ${this.pmtForPost.username} was successful! The post has been upvoted!`;
+      this.pmtSuccessMsg = `Your payment to ${this.pmtForPost.username} was successful!`;
     } catch (err) {
       this.pmtError = err.message;
     }
@@ -237,7 +237,7 @@ export class Store {
     this.makeItRain = true;
     setTimeout(() => {
       this.makeItRain = false;
-    }, 8000);
+    }, 15000);
   };
 
   private _updatePost = (post: Post) => {
