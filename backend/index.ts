@@ -6,11 +6,23 @@ import nodeManager, { NodeEvents } from './node-manager';
 import db, { PostEvents } from './posts-db';
 import * as routes from './routes';
 
+// let cors = require('cors');
+// let express,
+//   { Request, Response } = require('express');
+// let expressWs = require('express-ws');
+// let { Post, SocketEvents } = require('../src/shared/types');
+// let nodeManager,
+//   { NodeEvents } = require('./node-manager');
+// let db,
+//   { PostEvents } = require('./posts-db');
+// let routes = require('./routes');
+
 const PORT = 4000;
 
 //
 // Create Express server
 //
+console.log(`BEGIN`);
 const { app } = expressWs(express());
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
