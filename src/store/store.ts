@@ -172,6 +172,15 @@ export class Store {
   //   }
   // };
 
+  sendPaymentRequest = async (post: Post) => {
+    this.clearError();
+    try {
+      api.postInvoice(post.id);
+    } catch (err) {
+      this.error = err.message;
+    }
+  };
+
   showPaymentRequest = async (post: Post) => {
     this.clearError();
     try {
@@ -179,12 +188,16 @@ export class Store {
       this.pmtForPost = post;
       // this.pmtAmount = res.amount;
       // this.pmtAmount = await api.getPaymentAmount(post.invoice);
+<<<<<<< HEAD
+=======
+      this.pmtAmount = '100';
+>>>>>>> feature/paronson/newwork
       // this.pmtRequest = res.payreq;
       this.pmtRequest = post.invoice;
       // this.pmtHash = res.hash;
       this.pmtSuccessMsg = '';
       this.pmtError = '';
-      this.showPayModal = true;
+      // this.showPayModal = true;
     } catch (err) {
       this.error = err.message;
     }
