@@ -1,4 +1,6 @@
 {
+  "outDir": "out",
+  "sourceMap": true,
   "compilerOptions": {
     "module": "commonjs",
     "allowSyntheticDefaultImports": true,
