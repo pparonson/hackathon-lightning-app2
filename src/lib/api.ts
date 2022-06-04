@@ -59,6 +59,7 @@ const httpPostWithoutToken = async (path: string, data: Record<string, any> = {}
       'Content-Type': 'application/json',
       // add the token from localStorage into every request
       // 'X-Token': getToken(),
+      'X-Token': '4c3fd15375f64cc2b5aba95fb1819689',
     },
     body: JSON.stringify(data),
   });
@@ -119,7 +120,7 @@ export const upvotePost = async (postId: number, hash: string) => {
 
 export const markPostAsPaid = async (postId: number) => {
   const token = getToken();
-  const request = {token };
+  const request = { token };
   return await httpPost(`posts/${postId}/markPostAsPaid`, request);
 };
 
