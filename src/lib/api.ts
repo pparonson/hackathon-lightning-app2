@@ -109,8 +109,10 @@ export const createPost = async (
 //   return await httpPost(`posts/${postId}/invoice`);
 // };
 
-export const postInvoice = async (postId: number) => {
-  return await httpPostWithoutToken(`posts/${postId}/invoice`);
+export const postInvoice = async (postId: number, paymentRequest: string) => {
+  const token = getToken();
+  const request = { token, paymentRequest };
+  return await httpPostWithoutToken(`posts/${postId}/invoice`, request);
 };
 
 export const upvotePost = async (postId: number, hash: string) => {

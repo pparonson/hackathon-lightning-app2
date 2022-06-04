@@ -175,7 +175,7 @@ export class Store {
   sendPaymentRequest = async (post: Post) => {
     this.clearError();
     try {
-      api.postInvoice(post.id);
+      api.postInvoice(post.id, post.invoice);
     } catch (err) {
       this.error = err.message;
     }
