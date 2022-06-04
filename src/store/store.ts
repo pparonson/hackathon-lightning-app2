@@ -188,10 +188,7 @@ export class Store {
       this.pmtForPost = post;
       // this.pmtAmount = res.amount;
       // this.pmtAmount = await api.getPaymentAmount(post.invoice);
-<<<<<<< HEAD
-=======
       this.pmtAmount = '100';
->>>>>>> feature/paronson/newwork
       // this.pmtRequest = res.payreq;
       this.pmtRequest = post.invoice;
       // this.pmtHash = res.hash;
