@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "outDir": "out",
     "sourceMap": true,
+    "outDir": "out",
     "module": "commonjs",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
