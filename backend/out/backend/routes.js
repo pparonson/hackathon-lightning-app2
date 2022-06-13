@@ -39,10 +39,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.postInvoice = exports.markPaid = exports.getPaymentAmount = exports.createPost = exports.getPosts = exports.getInfo = exports.connect = void 0;
+exports.postInvoice2 = exports.postInvoice = exports.markPaid = exports.getPaymentAmount = exports.createPost = exports.getPosts = exports.getInfo = exports.connect = void 0;
+var fs_1 = __importDefault(require("fs"));
 var node_manager_1 = __importDefault(require("./node-manager"));
 var posts_db_1 = __importDefault(require("./posts-db"));
 var lnrpc_1 = require("@radar/lnrpc");
+// const grpc = require('@grpc/grpc-js');
+// const protoLoader = require('@grpc/proto-loader');
+var grpc_js_1 = __importDefault(require("@grpc/grpc-js"));
+var proto_loader_1 = __importDefault(require("@grpc/proto-loader"));
+var loaderOptions = {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true
+};
 /**
  * POST /api/connect
  */
@@ -228,39 +240,99 @@ exports.markPaid = function (req, res) { return __awaiter(void 0, void 0, void 0
 //  * POST /api/posts/:id/invoice
 //  */
 exports.postInvoice = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, post, host, cert, macaroon, config;
+    var id, host, cert, macaroon, config, payment_request;
     return __generator(this, function (_a) {
         id = req.params.id;
-        post = posts_db_1["default"].getPostById(parseInt(id));
-        if (!post)
-            throw new Error('Post not found');
         host = '127.0.0.1:10001';
         cert = '2d2d2d2d2d424547494e2043455254494649434154452d2d2d2d2d0a4d4949434a6a4343416332674177494241674952414a6b56434d2f3058437749554f7241584e4576464d4577436759494b6f5a497a6a3045417749774d5445660a4d4230474131554543684d576247356b494746316447396e5a57356c636d46305a575167593256796444454f4d4177474131554541784d4659577870593255770a4868634e4d6a49774e4449774d54517a4f544d315768634e4d6a4d774e6a45314d54517a4f544d31576a41784d523877485159445651514b45785a73626d51670a595856306232646c626d56795958526c5a43426a5a584a304d51347744415944565151444577566862476c6a5a54425a4d424d4742797147534d3439416745470a43437147534d343941774548413049414244416c397761737968644f505654454433474579646b4c535235647268756243743247433939306c42646d703777390a4431345835364b376f72792b2f463471375772314d4d6243372f546d546c586b796c6941764a696a676355776763497744675944565230504151482f424151440a41674b6b4d424d47413155644a51514d4d416f47434373474151554642774d424d41384741315564457745422f7751464d414d4241663877485159445652304f0a42425945464a6446314c7a6154646367566c465435444c30687858584c6b67354d477347413155644551526b4d474b434257467361574e6c67676c7362324e680a62476876633353434257467361574e6c6767357762327868636931754d79316862476c6a5a594945645735706549494b64573570654842685932746c644949480a596e566d59323975626f6345667741414159635141414141414141414141414141414141414141414159634572424941416a414b42676771686b6a4f505151440a41674e4841444245416942526a582b71696867346d686a365a7474456f646172635a6e2b6b7a2f536d5047734c38706d746b6d3965674967415a655551376d6f0a79756155312f67676c7431776b3271514c6b586175666d47682b735031614e426732413d0a2d2d2d2d2d454e442043455254494649434154452d2d2d2d2d0a';
-        macaroon = '0201036c6e640267030a1047fa466df4cdc8710568809efef6e9b91201301a0c0a04696e666f1204726561641a170a08696e766f69636573120472656164120577726974651a160a076d657373616765120472656164120577726974651a100a086f6666636861696e120472656164000006206be8c7be76b95f8efbb746f2396421485f1c90d3876076fd37da42a5903a83b0';
+        macaroon = '0201036c6e6402f801030a10490aa0750fae2f2bce6f34b8065fe8d81201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e6572617465120472656164000006206d5a99ce9a989c3c982960b0d4f7caf723746ea738c6c3539a55398424fab957';
         config = {
             server: host,
             cert: Buffer.from(cert, 'hex').toString('utf-8'),
             macaroon: macaroon
         };
+        payment_request = req.body.paymentRequest;
         (function () { return __awaiter(void 0, void 0, void 0, function () {
-            var routerRpc, request, stream;
+            var routerRpc, request, call;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, lnrpc_1.createRouterRpc(config)];
                     case 1:
                         routerRpc = _a.sent();
                         request = {
-                            payment_request: 'lnbcrt1u1p3xt2krpp5s85knwafuc4826pevvl8jmcqhnf6hm8cmwg2fdcuyey9yfarecrqdqqcqzpgsp5t8866e5cphurv07mc2eepk6vv8kr3ym3pwfrvspjya6lpr9lk74q9qyyssqutznlsev6cgzaqg49gwafhurztld76rsus37m02tn0j06wg9g7aj6gykwe43pnqqh4qf4uz7llhnyhvprk3wd8qk77uqlnwe688082sqk422pj'
+                            payment_request: payment_request,
+                            timeout_seconds: 15000
                         };
-                        stream = routerRpc.sendPaymentV2(request);
-                        stream.on('data', function (payment) {
-                            console.log("payment: " + payment);
-                            // this.emit(NodeEvents.invoicePaid, { hash, amount, pubkey });
+                        call = routerRpc.sendPaymentV2(request);
+                        call.on('data', function (response) {
+                            // A response was received from the server.
+                            console.log(response);
+                        });
+                        call.on('status', function (status) {
+                            // The current status of the stream.
+                        });
+                        call.on('end', function () {
+                            // The server has closed the stream.
                         });
                         return [2 /*return*/];
                 }
             });
         }); })();
+        return [2 /*return*/];
+    });
+}); };
+// /**
+//  * POST /api/posts/:id/invoice
+//  */
+exports.postInvoice2 = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var loaderOptions, packageDefinition, routerrpc, macaroon, lndCert, sslCreds, macaroonCreds, creds, router, request, call;
+    return __generator(this, function (_a) {
+        console.log('BEGIN postInvoice2');
+        loaderOptions = {
+            keepCase: true,
+            longs: String,
+            enums: String,
+            defaults: true,
+            oneofs: true
+        };
+        packageDefinition = proto_loader_1["default"].loadSync(['lightning.proto', 'routerrpc/router.proto'], loaderOptions);
+        routerrpc = grpc_js_1["default"].loadPackageDefinition(packageDefinition).routerrpc;
+        macaroon = fs_1["default"]
+            .readFileSync('/home/brightbug/.polar/networks/3/volumes/lnd/alice/data/chain/bitcoin/regtest/admin.macaroon')
+            .toString('hex');
+        process.env.GRPC_SSL_CIPHER_SUITES = 'HIGH+ECDSA';
+        lndCert = fs_1["default"].readFileSync('/home/brightbug/.polar/networks/3/volumes/lnd/alice/tls.cert');
+        sslCreds = grpc_js_1["default"].credentials.createSsl(lndCert);
+        macaroonCreds = grpc_js_1["default"].credentials.createFromMetadataGenerator(function (args, callback) {
+            var metadata = new grpc_js_1["default"].Metadata();
+            metadata.add('macaroon', macaroon);
+            callback(null, metadata);
+        });
+        creds = grpc_js_1["default"].credentials.combineChannelCredentials(sslCreds, macaroonCreds);
+        router = new routerrpc.Router('127.0.0.1:10001', creds);
+        request = {
+            // dest: <bytes>,
+            // amt: <int64>,
+            // amt_msat: <int64>,
+            // payment_hash: <bytes>,
+            // final_cltv_delta: <int32>,
+            // payment_addr: <bytes>,
+            // payment_request: <string>,
+            payment_request: req.body.paymentRequest,
+            // timeout_seconds: <int32>,
+            timeout_seconds: 30000
+        };
+        call = router.sendPaymentV2(request);
+        call.on('data', function (response) {
+            // A response was received from the server.
+            console.log(response);
+        });
+        call.on('status', function (status) {
+            // The current status of the stream.
+        });
+        call.on('end', function () {
+            // The server has closed the stream.
+        });
         return [2 /*return*/];
     });
 }); };

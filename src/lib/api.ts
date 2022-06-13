@@ -59,7 +59,7 @@ const httpPostWithoutToken = async (path: string, data: Record<string, any> = {}
       'Content-Type': 'application/json',
       // add the token from localStorage into every request
       // 'X-Token': getToken(),
-      'X-Token': '4c3fd15375f64cc2b5aba95fb1819689',
+      'X-Token': 'a7ca7a5f920a4f18b77691e5a593f472',
     },
     body: JSON.stringify(data),
   });
