@@ -56,7 +56,11 @@ function App() {
   return (
     <>
       <Navbar bg="dark" variant="dark" expand="md">
-        <Navbar.Brand onClick={store.gotoPosts}><h2><b>CoinWizard</b></h2></Navbar.Brand>
+        <Navbar.Brand onClick={store.gotoPosts}>
+          <h2>
+            <b>CoinWizard</b>
+          </h2>
+        </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
@@ -66,13 +70,15 @@ function App() {
       </Navbar>
 
       <Container className="my-3">
-        {store.error && (
-          <Alert variant="danger" dismissible onClose={store.clearError}>
-            {store.error}
-          </Alert>
-        )}
+        <>
+          {store.error && (
+            <Alert variant="danger" dismissible onClose={store.clearError}>
+              {store.error}
+            </Alert>
+          )}
 
-        {pages[store.page]}
+          {pages[store.page]}
+        </>
       </Container>
 
       <Confetti numberOfPieces={store.makeItRain ? 1000 : 0} />
