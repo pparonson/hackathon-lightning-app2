@@ -51,6 +51,25 @@ const httpPost = async (path: string, data: Record<string, any> = {}) => {
   return json;
 };
 
+const httpPostWithoutToken = async (path: string, data: Record<string, any> = {}) => {
+  const url = `${API_URL}/${path}`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      // add the token from localStorage into every request
+      // 'X-Token': getToken(),
+      'X-Token': 'a7ca7a5f920a4f18b77691e5a593f472',
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  if (json.error) {
+    throw new Error(json.error);
+  }
+  return json;
+};
+
 //
 // Exported API functions
 //
@@ -86,8 +105,14 @@ export const createPost = async (
   return await httpPost('posts', request);
 };
 
-export const createInvoice = async (postId: number) => {
-  return await httpPost(`posts/${postId}/invoice`);
+// export const createInvoice = async (postId: number) => {
+//   return await httpPost(`posts/${postId}/invoice`);
+// };
+
+export const postInvoice = async (postId: number, paymentRequest: string) => {
+  const token = getToken();
+  const request = { token, paymentRequest };
+  return await httpPostWithoutToken(`posts/${postId}/invoice`, request);
 };
 
 export const upvotePost = async (postId: number, hash: string) => {
@@ -97,7 +122,7 @@ export const upvotePost = async (postId: number, hash: string) => {
 
 export const markPostAsPaid = async (postId: number) => {
   const token = getToken();
-  const request = {token };
+  const request = { token };
   return await httpPost(`posts/${postId}/markPostAsPaid`, request);
 };
 
