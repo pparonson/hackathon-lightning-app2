@@ -8,6 +8,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
+    "lnd-grpc": "^0.5.3",
     "mobx": "^6.0.0",
     "mobx-react-lite": "^3.0.0",
     "react": "^16.13.1",
