@@ -212,7 +212,9 @@ export class Store {
       this._updatePost(event.data);
     }
     if (event.type === SocketEvents.invoicePaid) {
-      const { hash, amount, pubkey } = event.data;
+      // const { hash, amount, pubkey } = event.data;
+      const { amount } = event.data;
+
       // upvote the post when the incoming payment is made for the
       // pmtHash the we are waiting for
       //if (hash === this.pmtHash) {
