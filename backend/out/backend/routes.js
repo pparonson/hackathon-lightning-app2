@@ -206,11 +206,11 @@ exports.postInvoice2 = function (req, res) { return __awaiter(void 0, void 0, vo
                 return [4 /*yield*/, grpc.connect()];
             case 1:
                 _a.sent();
-                // Do something cool if we detect that the wallet is locked.
+                // Do something if we detect that the wallet is locked.
                 grpc.on("locked", function () { return console.log('wallet locked!'); });
-                // Do something cool when the wallet gets unlocked.
+                // Do something when the wallet gets unlocked.
                 grpc.on("active", function () { return console.log('wallet unlocked!'); });
-                // Do something cool when the connection gets disconnected.
+                // Do something when the connection gets disconnected.
                 grpc.on("disconnected", function () { return console.log('disconnected from lnd!'); });
                 console.log(grpc.state);
                 call = grpc.services.Router.sendPaymentV2(request);
