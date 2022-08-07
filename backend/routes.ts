@@ -99,30 +99,47 @@ export const markPaid = async (req: Request, res: Response) => {
 // /**
 //  * POST /api/posts/:id/invoice
 //  */
-// export const postInvoice = async (req: Request, res: Response) => {
-// const { id } = req.params;
-// find the post
-// const post = db.getPostById(parseInt(id));
-// if (!post) throw new Error('Post not found');
-// find the node that made this post
-// const node = db.getNodeByPubkey(post.pubkey);
-// if (!node) throw new Error('Node not found for this post');
+export const postInvoice = async (req: Request, res: Response) => {
+  console.log('BEGIN postInvoice');
 
-// create an invoice on the poster's node
-// const rpc = nodeManager.getRpc(node.token);
-// const amount = 100;
-// const inv = await rpc.addInvoice({ value: amount.toString() });
-// res.send({
-//   payreq: inv.paymentRequest,
-//   hash: (inv.rHash as Buffer).toString('base64'),
-//   amount,
-// });
-// };
+  let request = {
+    payment_request: req.body.paymentRequest,
+    timeout_seconds: 30000,
+  };
+  const grpc = new LndGrpc({
+    lndconnectUri:
+      'lndconnect://127.0.0.1:10001?cert=MIICJjCCAcygAwIBAgIQQjtsPC7wc7P4_6dr2kWNpjAKBggqhkjOPQQDAjAxMR8wHQYDVQQKExZsbmQgYXV0b2dlbmVyYXRlZCBjZXJ0MQ4wDAYDVQQDEwVhbGljZTAeFw0yMjA4MDYwMTA5NTFaFw0yMzEwMDEwMTA5NTFaMDExHzAdBgNVBAoTFmxuZCBhdXRvZ2VuZXJhdGVkIGNlcnQxDjAMBgNVBAMTBWFsaWNlMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECrEIZX53GVY4Eh75XmAhXH66wg3zVZVVy_oQi1EcsPt6bY3KGZZ4jH4tbTPj1Kgd2faRSIf6PC6mhlvaoaIDnqOBxTCBwjAOBgNVHQ8BAf8EBAMCAqQwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDwYDVR0TAQH_BAUwAwEB_zAdBgNVHQ4EFgQUcY_qHI5UDjKHUq7haX24zFDZkEEwawYDVR0RBGQwYoIFYWxpY2WCCWxvY2FsaG9zdIIFYWxpY2WCDnBvbGFyLW41LWFsaWNlggR1bml4ggp1bml4cGFja2V0ggdidWZjb25uhwR_AAABhxAAAAAAAAAAAAAAAAAAAAABhwSsEgAGMAoGCCqGSM49BAMCA0gAMEUCIGcSxREMPNa_A-ycXR7NeAoK--ghhZcr4ytyZXpR83lUAiEA4RFv91dL-CYd1pFH5ZBCJS5RgvPG0zky4-84dEuNefE&macaroon=AgEDbG5kAvgBAwoQB5X5RTFnsXFDNj9ZpeflKBIBMBoWCgdhZGRyZXNzEgRyZWFkEgV3cml0ZRoTCgRpbmZvEgRyZWFkEgV3cml0ZRoXCghpbnZvaWNlcxIEcmVhZBIFd3JpdGUaIQoIbWFjYXJvb24SCGdlbmVyYXRlEgRyZWFkEgV3cml0ZRoWCgdtZXNzYWdlEgRyZWFkEgV3cml0ZRoXCghvZmZjaGFpbhIEcmVhZBIFd3JpdGUaFgoHb25jaGFpbhIEcmVhZBIFd3JpdGUaFAoFcGVlcnMSBHJlYWQSBXdyaXRlGhgKBnNpZ25lchIIZ2VuZXJhdGUSBHJlYWQAAAYgS84qQ_Cq92Trkzq3YZX60NNlZiSl-Mk_3p1ArUxd1VA',
+  });
 
-// /**
-//  * POST /api/posts/:id/invoice
-//  */
-export const postInvoice = async (req: Request, res: Response) => {};
+  await grpc.connect();
+
+  // Do something if we detect that the wallet is locked.
+  grpc.on(`locked`, () => console.log('wallet locked!'));
+
+  // Do something when the wallet gets unlocked.
+  grpc.on(`active`, () => console.log('wallet unlocked!'));
+
+  // Do something when the connection gets disconnected.
+  grpc.on(`disconnected`, () => console.log('disconnected from lnd!'));
+
+  console.log(grpc.state);
+
+  let call = grpc.services.Router.sendPaymentV2(request);
+  call.on('data', function (response) {
+    // A response was received from the server.
+    console.log(response);
+  });
+  call.on('status', function (status) {
+    // The current status of the stream.
+    console.log(status);
+  });
+  call.on('end', async function () {
+    // The server has closed the stream.
+    console.log('END');
+    // Disconnect from all services.
+    await grpc.disconnect();
+  });
+};
 
 // /**
 //  * POST /api/posts/:id/invoice
@@ -167,57 +184,4 @@ export const postInvoice2 = async (req: Request, res: Response) => {
     // Disconnect from all services.
     await grpc.disconnect();
   });
-
-  // const loaderOptions = {
-  //   keepCase: true,
-  //   longs: String,
-  //   enums: String,
-  //   defaults: true,
-  //   oneofs: true,
-  // };
-  // const packageDefinition = protoLoader.loadSync(
-  //   ['lightning.proto', 'routerrpc/router.proto'],
-  //   loaderOptions,
-  // );
-  // const routerrpc = grpc.loadPackageDefinition(packageDefinition).routerrpc;
-  // // const macaroon = fs.readFileSync("LND_DIR/data/chain/bitcoin/simnet/admin.macaroon").toString('hex');
-  // const macaroon = fs
-  //   .readFileSync(
-  //     '/home/brightbug/.polar/networks/3/volumes/lnd/alice/data/chain/bitcoin/regtest/admin.macaroon',
-  //   )
-  //   .toString('hex');
-  // process.env.GRPC_SSL_CIPHER_SUITES = 'HIGH+ECDSA';
-  // // const lndCert = fs.readFileSync('LND_DIR/tls.cert');
-  // const lndCert = fs.readFileSync(
-  //   '/home/brightbug/.polar/networks/3/volumes/lnd/alice/tls.cert',
-  // );
-  // const sslCreds = grpc.credentials.createSsl(lndCert);
-  // const macaroonCreds = grpc.credentials.createFromMetadataGenerator(function (
-  //   args,
-  //   callback,
-  // ) {
-  //   let metadata = new grpc.Metadata();
-  //   metadata.add('macaroon', macaroon);
-  //   callback(null, metadata);
-  // });
-  // let creds = grpc.credentials.combineChannelCredentials(sslCreds, macaroonCreds);
-  // // let router = new routerrpc.Router('localhost:10009', creds);
-  // let router = new routerrpc.Router('127.0.0.1:10001', creds);
-
-  // let request = {
-  //   payment_request: req.body.paymentRequest,
-  //   timeout_seconds: 30000,
-  // };
-
-  // let call = router.sendPaymentV2(request);
-  // call.on('data', function (response) {
-  //   // A response was received from the server.
-  //   console.log(response);
-  // });
-  // call.on('status', function (status) {
-  //   // The current status of the stream.
-  // });
-  // call.on('end', function () {
-  //   // The server has closed the stream.
-  // });
 };
