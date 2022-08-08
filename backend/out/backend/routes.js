@@ -39,13 +39,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.postInvoice2 = exports.postInvoice = exports.markPaid = exports.getPaymentAmount = exports.createPost = exports.getPosts = exports.getInfo = exports.connect = void 0;
+exports.postInvoice = exports.markPaid = exports.getPaymentAmount = exports.createPost = exports.getPosts = exports.getInfo = exports.connect = void 0;
 var node_manager_1 = __importDefault(require("./node-manager"));
 var posts_db_1 = __importDefault(require("./posts-db"));
-// const grpc = require('@grpc/grpc-js');
-// const protoLoader = require('@grpc/proto-loader');
-// import grpc from '@grpc/grpc-js';
-// import protoLoader from '@grpc/proto-loader';
 var lnd_grpc_1 = __importDefault(require("lnd-grpc"));
 /**
  * POST /api/connect
@@ -163,60 +159,41 @@ exports.markPaid = function (req, res) { return __awaiter(void 0, void 0, void 0
 // /**
 //  * POST /api/posts/:id/invoice
 //  */
-// export const postInvoice = async (req: Request, res: Response) => {
-// const { id } = req.params;
-// find the post
-// const post = db.getPostById(parseInt(id));
-// if (!post) throw new Error('Post not found');
-// find the node that made this post
-// const node = db.getNodeByPubkey(post.pubkey);
-// if (!node) throw new Error('Node not found for this post');
-// create an invoice on the poster's node
-// const rpc = nodeManager.getRpc(node.token);
-// const amount = 100;
-// const inv = await rpc.addInvoice({ value: amount.toString() });
-// res.send({
-//   payreq: inv.paymentRequest,
-//   hash: (inv.rHash as Buffer).toString('base64'),
-//   amount,
-// });
-// };
-// /**
-//  * POST /api/posts/:id/invoice
-//  */
-exports.postInvoice = function (req, res) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
-    return [2 /*return*/];
-}); }); };
-// /**
-//  * POST /api/posts/:id/invoice
-//  */
-exports.postInvoice2 = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var request, grpc, call;
+exports.postInvoice = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var grpc, request, call;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log('BEGIN postInvoice2');
+                console.log('BEGIN postInvoice');
+                grpc = new lnd_grpc_1["default"]({
+                    lndconnectUri: 'lndconnect://127.0.0.1:10003?cert=MIICJzCCAcygAwIBAgIQfPhwV_rMoOBdcv4dK599BjAKBggqhkjOPQQDAjAxMR8wHQYDVQQKExZsbmQgYXV0b2dlbmVyYXRlZCBjZXJ0MQ4wDAYDVQQDEwVjYXJvbDAeFw0yMjA4MDYwMTA5NTFaFw0yMzEwMDEwMTA5NTFaMDExHzAdBgNVBAoTFmxuZCBhdXRvZ2VuZXJhdGVkIGNlcnQxDjAMBgNVBAMTBWNhcm9sMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE3eZS8wYYV3ea6Er-7Y8a-ZXcYo3h4cillp0auN3g8eEQBmj3IsA67hNW3A3kOADrKs1-je8gBqInTh_KbQTp-6OBxTCBwjAOBgNVHQ8BAf8EBAMCAqQwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDwYDVR0TAQH_BAUwAwEB_zAdBgNVHQ4EFgQUrz9DMK1-Gj8SNI05QYW9EqEz8q4wawYDVR0RBGQwYoIFY2Fyb2yCCWxvY2FsaG9zdIIFY2Fyb2yCDnBvbGFyLW41LWNhcm9sggR1bml4ggp1bml4cGFja2V0ggdidWZjb25uhwR_AAABhxAAAAAAAAAAAAAAAAAAAAABhwSsEgAEMAoGCCqGSM49BAMCA0kAMEYCIQDVR5jTQY4UZKj12whlSc9VzDGBejr2S7es_D3aF6NEgwIhAKHFy9IcLM3llwQ2eKt64Vq0aUqdLimP5Y35TNd1SdM0&macaroon=AgEDbG5kAvgBAwoQ5efPyl4IU1Gb2Q5nvAuhfhIBMBoWCgdhZGRyZXNzEgRyZWFkEgV3cml0ZRoTCgRpbmZvEgRyZWFkEgV3cml0ZRoXCghpbnZvaWNlcxIEcmVhZBIFd3JpdGUaIQoIbWFjYXJvb24SCGdlbmVyYXRlEgRyZWFkEgV3cml0ZRoWCgdtZXNzYWdlEgRyZWFkEgV3cml0ZRoXCghvZmZjaGFpbhIEcmVhZBIFd3JpdGUaFgoHb25jaGFpbhIEcmVhZBIFd3JpdGUaFAoFcGVlcnMSBHJlYWQSBXdyaXRlGhgKBnNpZ25lchIIZ2VuZXJhdGUSBHJlYWQAAAYgBTf9jpgJ2NbtVltzI1qRbroQUhWpsaXsELGk6w_G7UA'
+                });
                 request = {
                     payment_request: req.body.paymentRequest,
                     timeout_seconds: 30000
                 };
-                grpc = new lnd_grpc_1["default"]({
-                    lndconnectUri: 'lndconnect://127.0.0.1:10001?cert=MIICJjCCAcygAwIBAgIQQjtsPC7wc7P4_6dr2kWNpjAKBggqhkjOPQQDAjAxMR8wHQYDVQQKExZsbmQgYXV0b2dlbmVyYXRlZCBjZXJ0MQ4wDAYDVQQDEwVhbGljZTAeFw0yMjA4MDYwMTA5NTFaFw0yMzEwMDEwMTA5NTFaMDExHzAdBgNVBAoTFmxuZCBhdXRvZ2VuZXJhdGVkIGNlcnQxDjAMBgNVBAMTBWFsaWNlMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECrEIZX53GVY4Eh75XmAhXH66wg3zVZVVy_oQi1EcsPt6bY3KGZZ4jH4tbTPj1Kgd2faRSIf6PC6mhlvaoaIDnqOBxTCBwjAOBgNVHQ8BAf8EBAMCAqQwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDwYDVR0TAQH_BAUwAwEB_zAdBgNVHQ4EFgQUcY_qHI5UDjKHUq7haX24zFDZkEEwawYDVR0RBGQwYoIFYWxpY2WCCWxvY2FsaG9zdIIFYWxpY2WCDnBvbGFyLW41LWFsaWNlggR1bml4ggp1bml4cGFja2V0ggdidWZjb25uhwR_AAABhxAAAAAAAAAAAAAAAAAAAAABhwSsEgAGMAoGCCqGSM49BAMCA0gAMEUCIGcSxREMPNa_A-ycXR7NeAoK--ghhZcr4ytyZXpR83lUAiEA4RFv91dL-CYd1pFH5ZBCJS5RgvPG0zky4-84dEuNefE&macaroon=AgEDbG5kAvgBAwoQB5X5RTFnsXFDNj9ZpeflKBIBMBoWCgdhZGRyZXNzEgRyZWFkEgV3cml0ZRoTCgRpbmZvEgRyZWFkEgV3cml0ZRoXCghpbnZvaWNlcxIEcmVhZBIFd3JpdGUaIQoIbWFjYXJvb24SCGdlbmVyYXRlEgRyZWFkEgV3cml0ZRoWCgdtZXNzYWdlEgRyZWFkEgV3cml0ZRoXCghvZmZjaGFpbhIEcmVhZBIFd3JpdGUaFgoHb25jaGFpbhIEcmVhZBIFd3JpdGUaFAoFcGVlcnMSBHJlYWQSBXdyaXRlGhgKBnNpZ25lchIIZ2VuZXJhdGUSBHJlYWQAAAYgS84qQ_Cq92Trkzq3YZX60NNlZiSl-Mk_3p1ArUxd1VA'
-                });
                 return [4 /*yield*/, grpc.connect()];
             case 1:
                 _a.sent();
+                /**
+                 * NOTE: below commented listeners do not seem to work
+                 */
                 // Do something if we detect that the wallet is locked.
-                grpc.on("locked", function () { return console.log('wallet locked!'); });
+                // grpc.on(`locked`, () => console.log('wallet locked!'));
                 // Do something when the wallet gets unlocked.
-                grpc.on("active", function () { return console.log('wallet unlocked!'); });
+                // grpc.on(`active`, () => console.log('wallet unlocked!'));
                 // Do something when the connection gets disconnected.
-                grpc.on("disconnected", function () { return console.log('disconnected from lnd!'); });
+                // grpc.on(`disconnected`, () => console.log('disconnected from lnd!'));
                 console.log(grpc.state);
-                call = grpc.services.Router.sendPaymentV2(request);
+                return [4 /*yield*/, grpc.services.Router.sendPaymentV2(request)];
+            case 2:
+                call = _a.sent();
                 call.on('data', function (response) {
                     // A response was received from the server.
                     console.log(response);
+                    if (response.status.toLowerCase() === 'succeeded') {
+                        // TODO: need to mark post status as paid and return with confetti
+                    }
                 });
                 call.on('status', function (status) {
                     // The current status of the stream.

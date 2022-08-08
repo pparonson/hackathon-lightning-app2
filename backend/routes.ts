@@ -95,46 +95,48 @@ export const markPaid = async (req: Request, res: Response) => {
 export const postInvoice = async (req: Request, res: Response) => {
   console.log('BEGIN postInvoice');
 
+  const grpc = new LndGrpc({
+    lndconnectUri:
+      'lndconnect://127.0.0.1:10003?cert=MIICJzCCAcygAwIBAgIQfPhwV_rMoOBdcv4dK599BjAKBggqhkjOPQQDAjAxMR8wHQYDVQQKExZsbmQgYXV0b2dlbmVyYXRlZCBjZXJ0MQ4wDAYDVQQDEwVjYXJvbDAeFw0yMjA4MDYwMTA5NTFaFw0yMzEwMDEwMTA5NTFaMDExHzAdBgNVBAoTFmxuZCBhdXRvZ2VuZXJhdGVkIGNlcnQxDjAMBgNVBAMTBWNhcm9sMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE3eZS8wYYV3ea6Er-7Y8a-ZXcYo3h4cillp0auN3g8eEQBmj3IsA67hNW3A3kOADrKs1-je8gBqInTh_KbQTp-6OBxTCBwjAOBgNVHQ8BAf8EBAMCAqQwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDwYDVR0TAQH_BAUwAwEB_zAdBgNVHQ4EFgQUrz9DMK1-Gj8SNI05QYW9EqEz8q4wawYDVR0RBGQwYoIFY2Fyb2yCCWxvY2FsaG9zdIIFY2Fyb2yCDnBvbGFyLW41LWNhcm9sggR1bml4ggp1bml4cGFja2V0ggdidWZjb25uhwR_AAABhxAAAAAAAAAAAAAAAAAAAAABhwSsEgAEMAoGCCqGSM49BAMCA0kAMEYCIQDVR5jTQY4UZKj12whlSc9VzDGBejr2S7es_D3aF6NEgwIhAKHFy9IcLM3llwQ2eKt64Vq0aUqdLimP5Y35TNd1SdM0&macaroon=AgEDbG5kAvgBAwoQ5efPyl4IU1Gb2Q5nvAuhfhIBMBoWCgdhZGRyZXNzEgRyZWFkEgV3cml0ZRoTCgRpbmZvEgRyZWFkEgV3cml0ZRoXCghpbnZvaWNlcxIEcmVhZBIFd3JpdGUaIQoIbWFjYXJvb24SCGdlbmVyYXRlEgRyZWFkEgV3cml0ZRoWCgdtZXNzYWdlEgRyZWFkEgV3cml0ZRoXCghvZmZjaGFpbhIEcmVhZBIFd3JpdGUaFgoHb25jaGFpbhIEcmVhZBIFd3JpdGUaFAoFcGVlcnMSBHJlYWQSBXdyaXRlGhgKBnNpZ25lchIIZ2VuZXJhdGUSBHJlYWQAAAYgBTf9jpgJ2NbtVltzI1qRbroQUhWpsaXsELGk6w_G7UA',
+  });
   let request = {
     payment_request: req.body.paymentRequest,
     timeout_seconds: 30000,
   };
-  const grpc = new LndGrpc({
-    lndconnectUri: '',
-  });
 
   await grpc.connect();
 
-  // debug log grpc state
-  console.log(grpc.state);
+  /**
+   * NOTE: below commented listeners do not seem to work
+   */
 
   // Do something if we detect that the wallet is locked.
-  grpc.on(`locked`, () => console.log('wallet locked!'));
+  // grpc.on(`locked`, () => console.log('wallet locked!'));
 
   // Do something when the wallet gets unlocked.
-  grpc.on(`active`, () => {
-    console.log('wallet unlocked!');
-    let call = grpc.services.Router.sendPaymentV2(request);
-    call.on('data', function (response) {
-      // A response was received from the server.
-      console.log(response);
-    });
-    call.on('status', function (status) {
-      // The current status of the stream.
-      console.log(status);
-    });
-    call.on('end', async function () {
-      // The server has closed the stream.
-      console.log('END sendPaymentV2');
-
-      // Disconnect from all services.
-      await grpc.disconnect();
-    });
-  });
+  // grpc.on(`active`, () => console.log('wallet unlocked!'));
 
   // Do something when the connection gets disconnected.
-  grpc.on(`disconnected`, () => console.log('disconnected from lnd!'));
+  // grpc.on(`disconnected`, () => console.log('disconnected from lnd!'));
 
-  // debug log grpc state
   console.log(grpc.state);
+
+  let call = await grpc.services.Router.sendPaymentV2(request);
+  call.on('data', function (response) {
+    // A response was received from the server.
+    console.log(response);
+    if (response.status.toLowerCase() === 'succeeded') {
+      // TODO: need to mark post status as paid and return with confetti
+    }
+  });
+  call.on('status', function (status) {
+    // The current status of the stream.
+    console.log(status);
+  });
+  call.on('end', async function () {
+    // The server has closed the stream.
+    console.log('END');
+    // Disconnect from all services.
+    await grpc.disconnect();
+  });
 };
