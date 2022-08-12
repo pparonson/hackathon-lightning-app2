@@ -166,7 +166,7 @@ exports.postInvoice = function (req, res) { return __awaiter(void 0, void 0, voi
             case 0:
                 console.log('BEGIN postInvoice');
                 grpc = new lnd_grpc_1["default"]({
-                    lndconnectUri: 'lndconnect://127.0.0.1:10001?cert=MIICJjCCAcygAwIBAgIQQjtsPC7wc7P4_6dr2kWNpjAKBggqhkjOPQQDAjAxMR8wHQYDVQQKExZsbmQgYXV0b2dlbmVyYXRlZCBjZXJ0MQ4wDAYDVQQDEwVhbGljZTAeFw0yMjA4MDYwMTA5NTFaFw0yMzEwMDEwMTA5NTFaMDExHzAdBgNVBAoTFmxuZCBhdXRvZ2VuZXJhdGVkIGNlcnQxDjAMBgNVBAMTBWFsaWNlMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECrEIZX53GVY4Eh75XmAhXH66wg3zVZVVy_oQi1EcsPt6bY3KGZZ4jH4tbTPj1Kgd2faRSIf6PC6mhlvaoaIDnqOBxTCBwjAOBgNVHQ8BAf8EBAMCAqQwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDwYDVR0TAQH_BAUwAwEB_zAdBgNVHQ4EFgQUcY_qHI5UDjKHUq7haX24zFDZkEEwawYDVR0RBGQwYoIFYWxpY2WCCWxvY2FsaG9zdIIFYWxpY2WCDnBvbGFyLW41LWFsaWNlggR1bml4ggp1bml4cGFja2V0ggdidWZjb25uhwR_AAABhxAAAAAAAAAAAAAAAAAAAAABhwSsEgAGMAoGCCqGSM49BAMCA0gAMEUCIGcSxREMPNa_A-ycXR7NeAoK--ghhZcr4ytyZXpR83lUAiEA4RFv91dL-CYd1pFH5ZBCJS5RgvPG0zky4-84dEuNefE&macaroon=AgEDbG5kAvgBAwoQB5X5RTFnsXFDNj9ZpeflKBIBMBoWCgdhZGRyZXNzEgRyZWFkEgV3cml0ZRoTCgRpbmZvEgRyZWFkEgV3cml0ZRoXCghpbnZvaWNlcxIEcmVhZBIFd3JpdGUaIQoIbWFjYXJvb24SCGdlbmVyYXRlEgRyZWFkEgV3cml0ZRoWCgdtZXNzYWdlEgRyZWFkEgV3cml0ZRoXCghvZmZjaGFpbhIEcmVhZBIFd3JpdGUaFgoHb25jaGFpbhIEcmVhZBIFd3JpdGUaFAoFcGVlcnMSBHJlYWQSBXdyaXRlGhgKBnNpZ25lchIIZ2VuZXJhdGUSBHJlYWQAAAYgS84qQ_Cq92Trkzq3YZX60NNlZiSl-Mk_3p1ArUxd1VA'
+                    lndconnectUri: 'lndconnect://127.0.0.1:10001?cert=MIICJjCCAc2gAwIBAgIRAOltkfkMF2l6F_YYoQ_SnTIwCgYIKoZIzj0EAwIwMTEfMB0GA1UEChMWbG5kIGF1dG9nZW5lcmF0ZWQgY2VydDEOMAwGA1UEAxMFYWxpY2UwHhcNMjIwODExMjEwNTU3WhcNMjMxMDA2MjEwNTU3WjAxMR8wHQYDVQQKExZsbmQgYXV0b2dlbmVyYXRlZCBjZXJ0MQ4wDAYDVQQDEwVhbGljZTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABOwkAz0Js8ZHnyxX5NYbGrp-PuWyoXOz98XHNS16l_8hr3Mb7yjN0j3LReKZj9zUR6nUaj0c-IU5GIGc3x3KpgGjgcUwgcIwDgYDVR0PAQH_BAQDAgKkMBMGA1UdJQQMMAoGCCsGAQUFBwMBMA8GA1UdEwEB_wQFMAMBAf8wHQYDVR0OBBYEFJS5FSPqtw-oJZybttUM-pFXFfUiMGsGA1UdEQRkMGKCBWFsaWNlgglsb2NhbGhvc3SCBWFsaWNlgg5wb2xhci1uNC1hbGljZYIEdW5peIIKdW5peHBhY2tldIIHYnVmY29ubocEfwAAAYcQAAAAAAAAAAAAAAAAAAAAAYcErBQAAjAKBggqhkjOPQQDAgNHADBEAiBycJKvte_IvaTbhahwa65Ux294bwtNAmHSRLV8Bnj93gIgBulGD39ZwK4L-0s8evyG1d7su542Thdh7er5kCgpZoc&macaroon=AgEDbG5kAvgBAwoQCIbSxfenIg62ObaXYAPFehIBMBoWCgdhZGRyZXNzEgRyZWFkEgV3cml0ZRoTCgRpbmZvEgRyZWFkEgV3cml0ZRoXCghpbnZvaWNlcxIEcmVhZBIFd3JpdGUaIQoIbWFjYXJvb24SCGdlbmVyYXRlEgRyZWFkEgV3cml0ZRoWCgdtZXNzYWdlEgRyZWFkEgV3cml0ZRoXCghvZmZjaGFpbhIEcmVhZBIFd3JpdGUaFgoHb25jaGFpbhIEcmVhZBIFd3JpdGUaFAoFcGVlcnMSBHJlYWQSBXdyaXRlGhgKBnNpZ25lchIIZ2VuZXJhdGUSBHJlYWQAAAYgayjXw6gX012qd_nMc2BXVkqNxTBv2mORACvJnwX7bNo'
                 });
                 request = {
                     payment_request: req.body.paymentRequest,
@@ -193,6 +193,7 @@ exports.postInvoice = function (req, res) { return __awaiter(void 0, void 0, voi
                     console.log(response);
                     if (response.status.toLowerCase() === 'succeeded') {
                         // TODO: need to mark post status as paid and return with confetti
+                        res.send(response);
                     }
                 });
                 call.on('status', function (status) {
@@ -202,9 +203,17 @@ exports.postInvoice = function (req, res) { return __awaiter(void 0, void 0, voi
                 call.on('end', function () {
                     return __awaiter(this, void 0, void 0, function () {
                         return __generator(this, function (_a) {
-                            // The server has closed the stream.
-                            console.log('END');
-                            return [2 /*return*/];
+                            switch (_a.label) {
+                                case 0:
+                                    // The server has closed the stream.
+                                    console.log('END');
+                                    // Disconnect from all services.
+                                    return [4 /*yield*/, grpc.disconnect()];
+                                case 1:
+                                    // Disconnect from all services.
+                                    _a.sent();
+                                    return [2 /*return*/];
+                            }
                         });
                     });
                 });

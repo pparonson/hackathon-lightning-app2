@@ -174,10 +174,18 @@ export class Store {
 
   sendPaymentRequest = async (post: Post) => {
     this.clearError();
-    try {
-      api.postInvoice(post.id, post.invoice);
-    } catch (err) {
-      this.error = err.message;
+    // try {
+    //   api.postInvoice(post.id, post.invoice);
+    // } catch (err) {
+    //   this.error = err.message;
+    // }
+
+    const res = await api
+      .postInvoice(post.id, post.invoice)
+      .catch(err => (this.error = err.message));
+    if (res.status === 'succeeded') {
+      // TODO:
+      console.log(`sendPaymentRequestV2 response: ${JSON.stringify(res, null, 2)}`);
     }
   };
 
